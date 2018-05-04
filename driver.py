@@ -1,3 +1,4 @@
+import json
 import requests
 
 from blockchain import BlockChain
@@ -26,12 +27,14 @@ def class_tests():
 
 # Test Blockchain APIs
 def register_node(node_addr, parent_server):
-    resp = requests.post(parent_server + '/register-node', json={'address': node_addr})
+    my_data = {"address": node_addr}
+    resp = requests.post(parent_server + '/register-node', data=json.dumps(my_data))
     print("\nOn Server {}: Node-{} has been registered successfully!\n".format(parent_server, node_addr))
     return resp
 
-def create_transaction(server, data):
-    resp = requests.post(server + '/create-transaction', json=data).json()
+def create_transaction(server, datad):
+    my_data=json.dumps(datad)
+    resp = requests.post(server + '/create-transaction', data=json.dumps(my_data))
     print("On Server {}: Transaction has been processed!\n".format(server))
     return resp
 
