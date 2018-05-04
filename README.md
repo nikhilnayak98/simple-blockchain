@@ -13,3 +13,18 @@ Since bitcoin boom, everybody is losing their mind, and as a result of that, we 
 **Node**: A server will be treated as a single node in a blockchain network. We can compare and map with the unique HTTP servers.
 
 **Consensus**: Consensus algorithm comes into picture when we have more than one node in our blockchain network. To make sure every node in our network has the same blockchain, we use this algorithm.
+
+## Steps
+1. Start your Flask app servers
+    - <code>python app.py -p 5000</code>
+    - <code>python app.py -p 5001</code>
+2. Check what we have in the chain
+    - <code>curl "http://127.0.0.1:5000/chain"</code>
+3. Create a transaction
+    - <code>curl -X POST -H "Content-Type: application/json" -d '{"sender": "addr1", "recipient": "addr2", "amount": 3}' "http://127.0.0.1:5000/create-transaction"</code>
+4. Mine a new block
+    - <code>curl "http://127.0.0.1:5000/mine"</code>
+5. Check the chain
+    - <code>curl "http://127.0.0.1:5000/chain"</code>
+6. Register another node to the server
+    - <code>curl -X POST -H "Content-Type: application/json" -d '{"address": "http://127.0.0.1:5001"}' "http://127.0.0.1:5000/register-node"</code>
