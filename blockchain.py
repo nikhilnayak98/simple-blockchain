@@ -1,7 +1,6 @@
 import time
 import hashlib
 
-
 class Block(object):
 
     def __init__(self, index, proof, previous_hash, transactions, timestamp=None):
