@@ -50,6 +50,52 @@ def get_full_chain():
     }
     return jsonify(response)
 
+@app.route('/register-node', methods=['POST'])
+def register_node():
+
+    node_data = request.get_json()
+
+    blockchain.create_node(node_data.get('address'))
+
+    response = {
+        'message': 'New node has been added',
+        'node_count': len(blockchain.nodes),
+        'nodes': list(blockchain.nodes),
+    }
+    return jsonify(response), 201
+
+
+@app.route('/sync-chain', methods=['GET'])
+def consensus():
+
+    def get_neighbour_chains():
+        neighbour_chains = []
+        for node_address in blockchain.nodes:
+            resp = requests.get(node_address + url_for('get_full_chain')).json()
+            chain = resp['chain']
+            neighbour_chains.append(chain)
+        return neighbour_chains
+
+    neighbour_chains = get_neighbour_chains()
+    if not neighbour_chains:
+        return jsonify({'message': 'No neighbour chain is available'})
+
+    longest_chain = max(neighbour_chains, key=len)  # Get the longest chain
+
+    if len(blockchain.chain) >= len(longest_chain):  # If our chain is longest, then do nothing
+        response = {
+            'message': 'Chain is already up to date',
+            'chain': blockchain.get_serialized_chain
+        }
+    else:  # If our chain isn't longest, then we store the longest chain
+        blockchain.chain = [blockchain.get_block_object_from_block_data(block) for block in longest_chain]
+        response = {
+            'message': 'Chain was replaced',
+            'chain': blockchain.get_serialized_chain
+        }
+
+    return jsonify(response)
+
 if __name__ == '__main__':
     from argparse import ArgumentParser
     parser = ArgumentParser()
