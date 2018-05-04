@@ -33,6 +33,15 @@ def create_transaction():
 
     return jsonify(response), 201
 
+@app.route('/mine', methods=['GET'])
+def mine():
+    block = blockchain.mine_block(node_address)
+
+    response = {
+        'message': 'Successfully Mined the new Block',
+        'block_data': block
+    }
+    return jsonify(response)
 
 if __name__ == '__main__':
     from argparse import ArgumentParser
