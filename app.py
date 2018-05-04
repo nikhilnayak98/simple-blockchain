@@ -12,6 +12,28 @@ blockchain = BlockChain()
 
 node_address = uuid4().hex  # Unique address for current node
 
+@app.route('/create-transaction', methods=['POST'])
+def create_transaction():
+    """
+    Input Payload:
+    {
+        "sender": "address_1"
+        "recipient": "address_2",
+        "amount": 3
+    }
+    """
+    transaction_data = request.get_json()
+
+    index = blockchain.create_new_transaction(**transaction_data)
+
+    response = {
+        'message': 'Transaction has been submitted successfully',
+        'block_index': index
+    }
+
+    return jsonify(response), 201
+
+
 if __name__ == '__main__':
     from argparse import ArgumentParser
     parser = ArgumentParser()
