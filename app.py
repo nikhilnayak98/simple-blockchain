@@ -43,6 +43,13 @@ def mine():
     }
     return jsonify(response)
 
+@app.route('/chain', methods=['GET'])
+def get_full_chain():
+    response = {
+        'chain': blockchain.get_serialized_chain
+    }
+    return jsonify(response)
+
 if __name__ == '__main__':
     from argparse import ArgumentParser
     parser = ArgumentParser()
