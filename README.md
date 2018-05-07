@@ -28,3 +28,6 @@ Since bitcoin boom, everybody is losing their mind, and as a result of that, we 
     - <code>curl "http://127.0.0.1:5000/chain"</code>
 6. Register another node to the server
     - <code>curl -X POST -H "Content-Type: application/json" -d '{"address": "http://127.0.0.1:5001"}' "http://127.0.0.1:5000/register-node"</code>
+
+## Tests
+<code>python driver.py</code>
